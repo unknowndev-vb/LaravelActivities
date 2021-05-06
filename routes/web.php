@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\CommentController;
+use App\Http\Controllers\HomeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,27 +16,13 @@ use App\Http\Controllers\PostController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('index');
+
+Route::get('/home', function () {
+    return redirect('/posts');
 });
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
-
-Route::resource('/posts',PostController::class);
-
-// For group auth, we can also make auth inside the controller
-// Route::middleware(['auth'])->group(function () {
-//     Route::resource('posts', PostController::class)->only([
-//         'create', 'edit', 'destroy','store', 'update'
-//     ]);
-// });
-
-// Route::get('/posts',[PostController::class,'index'])->name('index');
-// Route::get('/posts/{id}',[PostController::class,'show'])->name('show');
-
-
-
-
+Route::resource('posts',PostController::class);
+Route::resource('comments',CommentController::class);
